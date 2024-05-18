@@ -1,0 +1,27 @@
+version: '3.5'
+
+services:  
+  web:
+    container_name: meemee
+    restart: always
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:3000"
+    # links:
+      # - mongo
+    volumes:
+      - ./app:/web/app
+
+  # mongo:
+  #   image: mongo
+  #   container_name: mongo_meemee
+  #   restart: always
+  #   ports:
+  #     - "27018:27017"
+  #   volumes:
+  #     - ./mongo-volume:/data/db
+    
+  #   logging:
+  #     driver: none

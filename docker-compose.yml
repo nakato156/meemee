@@ -14,14 +14,14 @@ services:
     volumes:
       - ./app:/web/app
 
-  # mongo:
-  #   image: mongo
-  #   container_name: mongo_meemee
-  #   restart: always
-  #   ports:
-  #     - "27018:27017"
-  #   volumes:
-  #     - ./mongo-volume:/data/db
+  mongo:
+    image: mongo
+    container_name: mongo_meemee
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo-volume:/data/db
     
-  #   logging:
-  #     driver: none
+    logging:
+      driver: none

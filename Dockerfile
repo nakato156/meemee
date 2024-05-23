@@ -13,4 +13,4 @@ EXPOSE 3000
 
 # ENV MONGODB_URI <tu URI de MongoDB Atlas>
 
-CMD ["nodemon", "--exec", 'npm run dev']
+CMD ["npm", "run", "dev"]

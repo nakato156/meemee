@@ -1,0 +1,71 @@
+  <!--
+// v0 by Vercel.
+// https://v0.dev/t/3Ns4stESH5o
+-->
+<style>
+    textarea {
+      scrollbar-width: none;
+      /* Para navegadores Firefox */
+      -ms-overflow-style: none;
+      /* Para navegadores Internet Explorer/Edge */
+      overflow: auto;
+      /* Asegura que el contenido sea desplazable */
+    }
+
+    textarea::-webkit-scrollbar {
+      width: 0;
+    }
+
+    textarea::-webkit-scrollbar-thumb {
+      background-color: transparent;
+    }
+
+    textarea::-moz-scrollbar {
+      width: 0;
+    }
+  </style>
+  <dialog open="" class="bg-zinc-800 rounded-lg">
+    <div class="w-full max-w-3xl rounded-md">
+      <div class="w-full flex p-2 justify-between">
+        <p class="text-white">Nueva publicaci&oacute;n</p>
+        <div id="uploadPost" class="cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-emerald-600 hover:scale-105">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+          </svg>          
+        </div>
+      </div>
+      <div class="space-y-6 pb-2 w-full border-t border-t-gray-400">
+        <div class="w-full grid grid-cols-3">
+          <label id="dropArea" class="col-span-2 flex w-full h-[400px] items-center justify-center rounded-l-lg bg-transparent"
+            for="inputPost">
+            <!-- <img id="preview" class="hidden h-full w-full" src="" alt=""> -->
+            <div id="areaPlaceholder" class="text-center space-y-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="mx-auto h-12 w-12 text-gray-400">
+                <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path>
+                <path d="M12 12v9"></path>
+                <path d="m16 16-4-4-4 4"></path>
+              </svg>
+              <p class="text-sm text-gray-500 dark:text-gray-400">Arrastra y suelta o da click para subir</p>
+            </div>
+            <input type="file" class="hidden" name="post" id="inputPost">
+          </label>
+          <div class="h-full border border-white">
+            <div class="h-[80%] rounded-md">
+              <textarea
+                class="row-span-3 flex h-full resize-none w-full bg-transparent px-3 py-2 text-sm text-white outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                id="descripcion" rows="3" placeholder="Escribe una descripci&oacute;n"></textarea>
+              <span class="text-gray-400 text-xs"><span id="contDesc"></span>/500</span>
+            </div>
+            <div class="hidden">
+              <!-- Hashtags suggestion -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/compressorjs/1.2.1/compressor.min.js" integrity="sha512-MgYeYFj8R3S6rvZHiJ1xA9cM/VDGcT4eRRFQwGA7qDP7NHbnWKNmAm28z0LVjOuUqjD0T9JxpDMdVqsZOSHaSA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ffmpeg/0.12.10/umd/ffmpeg.min.js" integrity="sha512-j2FJMGBh+AdPWKCKDqIzH67vu4ps8OsNZqqetz8YSlbwy2ZwFTL+p6Hp1j17nL0B7IDl9E4zhPUXZKwz7MzjQQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/js/modalUpload.js"></script>

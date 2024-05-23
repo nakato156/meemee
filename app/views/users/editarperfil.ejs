@@ -1,0 +1,68 @@
+<%- include("../share/cabecera") %>
+
+  <!--
+// v0 by Vercel.
+// https://v0.dev/t/12dJrgRKmEN
+-->
+
+  <div class="grid min-h-screen w-full grid-cols-[280px_1fr]">
+    <%- include("../share/sidebar") %>
+      <div class="flex flex-col items-center justify-center h-screen bg-gray-100 dark:bg-gray-900">
+        <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg w-full max-w-md p-8 py-4">
+          <div class="flex flex-col items-center mb-6">
+            <div class="relative">
+              <img id="previewImg" src="<%=profilePicture%>" alt="Profile Picture" width="96" height="96"
+                class="border border-slate-800 dark:border-gray-200 rounded-full w-24 h-24 object-cover"
+                style="aspect-ratio: 96 / 96; object-fit: cover;" />
+
+              <label for="inputImg"
+                class=" cursor-pointer inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10 absolute bottom-0 right-0 bg-gray-900 dark:text-white rounded-full p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+                  <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z">
+                  </path>
+                  <circle cx="12" cy="13" r="3"></circle>
+                </svg>
+              </label>
+            </div>
+            <h2 class="text-2xl font-bold mt-4 dark:text-white">John Doe</h2>
+          </div>
+          <form id="updateInfo" class="space-y-4 dark:text-gray-200" enctype="multipart/form-data">
+            <input id="inputImg" style="display: none;" type="file" accept="image/*" name="image">
+            <div>
+              <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                for="username">
+                Username
+              </label>
+              <input
+                class="flex h-10 w-full rounded-md border border-input text-gray-600 px-3 py-2 text-sm file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                name="username" placeholder="Enter your username" value="<%=username%>" />
+            </div>
+            <div>
+              <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                for="bio">
+                Bio
+              </label>
+              <textarea id="bio"
+                class="flex min-h-[80px] w-full rounded-md border p-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none text-gray-600 focus-visible:ring-offset-2 disabled:opacity-50 mt-1"
+                name="bio" rows="3"><%=bio%></textarea>
+              <span class="text-gray-400 text-xs"><span id="cont"></span>/150</span>
+            </div>
+            <div>
+              <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                for="email">
+                Email
+              </label>
+              <input
+                class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm file:border-0 text-gray-600 file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                name="email" placeholder="Enter your email" type="email" value="<%=email%>" />
+            </div>
+            <button
+              class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-emerald-600 text-white hover:bg-emerald-600/90 h-10 px-4 py-2 w-full">
+              Guardar cambios
+            </button>
+          </form>
+        </div>
+      </div>
+  </div>
+  <script src="/js/editarperfil.js"></script>

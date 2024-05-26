@@ -1,7 +1,6 @@
 (function() {
     const dropArea = document.getElementById('dropArea');
     const input = document.getElementById('inputPost');
-    const preview = document.getElementById('preview');
     const areaPlaceholder = document.getElementById('areaPlaceholder');
     const btnSend = document.getElementById('uploadPost');
 
@@ -36,24 +35,29 @@
 
 function showFiles(file, areaPlaceholder) {
     const fileType = file.type;
-    console.log(fileType)
     const validExtensions = ['image/jpeg', 'image/png', 'image/gif', 'video/mp4', 'video/mov', 'video/x-matroska'];
     if(validExtensions.includes(fileType)){
         if(fileType.includes('video')){
-            compressVideo(file, video => {
-                const preview = document.createElement('video');
-                preview.classList.add('w-full', 'h-full', 'object-cover');
-                const source = document.createElement('source');
-                source.src = URL.createObjectURL(video);
-                preview.appendChild(source);
-                areaPlaceholder.parentElement.appendChild(preview)
-            })
+            const preview = document.createElement('video');
+            preview.controls = true;
+            preview.autoplay = true;
+            preview.classList.add('w-full', 'h-full', 'object-cover');
+            const source = document.createElement('source');
+            source.src = URL.createObjectURL(file);
+            
+            if(areaPlaceholder.parentElement.querySelector('video'))
+                areaPlaceholder.parentElement.querySelector('video').remove();
+            
+            preview.appendChild(source);
+            areaPlaceholder.parentElement.appendChild(preview)
+            
         }else{
             processImage(file, 380, 380, 0.65, compressedFile => {
                 const preview = document.createElement('img');
-                console.log(preview)
                 preview.classList.add('w-full', 'h-full', 'object-cover');
                 preview.src = URL.createObjectURL(compressedFile);
+                if(areaPlaceholder.parentElement.querySelector('img'))
+                    areaPlaceholder.parentElement.querySelector('img').remove();
                 areaPlaceholder.parentElement.appendChild(preview)
             });
         }
@@ -61,27 +65,6 @@ function showFiles(file, areaPlaceholder) {
     } else {
         Swal.fire({icon:'warning', text:'Formato no soportado'});
     }
-}
-
-async function compressVideo(file, callback) {
-    const { createFFmpeg, fetchFile } = FFmpeg;
-    const ffmpeg = createFFmpeg({ log: true });
-
-    // Cargar ffmpeg
-    await ffmpeg.load();
-
-    // Leer el archivo y escribirlo en el sistema de archivos virtual de ffmpeg
-    ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(file));
-
-    // Ejecutar el comando de compresión
-    await ffmpeg.run('-i', 'input.mp4', '-vf', 'scale=640:360', '-c:v', 'libx264', '-crf', '28', 'output.mp4');
-
-    // Leer el archivo comprimido del sistema de archivos virtual de ffmpeg
-    const data = ffmpeg.FS('readFile', 'output.mp4');
-    const compressedBlob = new Blob([data.buffer], { type: 'video/mp4' });
-
-    // Devolver el archivo comprimido mediante el callback
-    callback(compressedBlob);
 }
 
 function resizeImage(file, maxWidth, maxHeight, callback) {
@@ -126,14 +109,33 @@ function processImage(file, maxWidth, maxHeight, quality, callback) {
 }
 
 function uploadPost(file){
+    const descripcion = document.getElementById('descripcionPost');
     const data = new FormData()
-    data.append('file', file)
+    data.append('image', file)
+    data.append('descripcion', descripcion.value)
+
     fetch("/publicar/post", {
         method: 'POST',
         body: data
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data)
+        alert("No se si se subio pero...", {data})
+        if(data.status){
+            const contador = document.getElementById("countPub")
+            contador.innerText = parseInt(contador.innerText) + 1
+            showNewPost(file)
+        }
     })
+}
+
+function showNewPost(file){
+    const preview = file.type.includes("video") ? document.createElement('video') : document.createElement('img');
+    preview.src = URL.createObjectURL(file);
+    preview.classList.add('w-full', 'h-full', 'object-cover');
+
+    const contenedor = document.createElement('div');
+    contenedor.appendChild(preview)
+    const contenedorPosts = document.getElementById('content-posts')
+    contenedorPosts.insertBefore(contenedor, contenedorPosts.firstChild)
 }

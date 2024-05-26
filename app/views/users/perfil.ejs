@@ -29,19 +29,19 @@
               </button>
             </div>
             <div class="flex justify-between text-gray-200">
-              <p><b class="text-white"><%=postCount%></b> Publicaci&oacute;n</p>
-              <p><b class="text-white"><%=followerCount%></b> Seguidores</p>
-              <p><b class="text-white"><%=followingCount%></b> Seguidos</p>
+              <p><b id="countPub" class="text-white"><%=postCount%></b> Publicaci&oacute;n</p>
+              <p><b id="countFollwers" class="text-white"><%=followerCount%></b> Seguidores</p>
+              <p><b id="countFollowings" class="text-white"><%=followingCount%></b> Seguidos</p>
             </div>
             <p class="text-sm text-gray-500 dark:text-gray-400 max-w-md">
-              <%=bio%>bio
+              <%=bio%>
             </p>
           </div>
         </div>
       </div>
       <section class="mb-5 text-center">
         <div class="w-20 text-slate-900 dark:text-gray-100">
-          <div id="nuevo" class="w-20 h-20 flex rounded-full border border-gray-700 dark:border-white hover:cursor-pointer">
+          <div id="nuevo" class="modal w-20 h-20 flex rounded-full border border-gray-700 dark:border-white hover:cursor-pointer" url="/perfil/crear">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 m-auto">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>        
@@ -92,47 +92,24 @@
           data-orientation="horizontal"
           role="tabpanel"
           aria-labelledby="radix-:R2lafnnja:-trigger-posts"
-          id="radix-:R2lafnnja:-content-posts"
+          id="content-posts"
           tabindex="0"
           class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 grid grid-cols-3 gap-4 p-4"
           style="animation-duration:0s"
         >
-          <div class="relative group overflow-hidden rounded-lg">
-            <a class="absolute inset-0 z-10" href="#">
-              <span class="sr-only">View</span>
-            </a>
-            <img src="/placeholder.svg" alt="Post 1" width="400" height="400" class="aspect-square object-cover" />
-          </div>
-          <div class="relative group overflow-hidden rounded-lg">
-            <a class="absolute inset-0 z-10" href="#">
-              <span class="sr-only">View</span>
-            </a>
-            <img src="/placeholder.svg" alt="Post 2" width="400" height="400" class="aspect-square object-cover" />
-          </div>
-          <div class="relative group overflow-hidden rounded-lg">
-            <a class="absolute inset-0 z-10" href="#">
-              <span class="sr-only">View</span>
-            </a>
-            <img src="/placeholder.svg" alt="Post 3" width="400" height="400" class="aspect-square object-cover" />
-          </div>
-          <div class="relative group overflow-hidden rounded-lg">
-            <a class="absolute inset-0 z-10" href="#">
-              <span class="sr-only">View</span>
-            </a>
-            <img src="/placeholder.svg" alt="Post 4" width="400" height="400" class="aspect-square object-cover" />
-          </div>
-          <div class="relative group overflow-hidden rounded-lg">
-            <a class="absolute inset-0 z-10" href="#">
-              <span class="sr-only">View</span>
-            </a>
-            <img src="/placeholder.svg" alt="Post 5" width="400" height="400" class="aspect-square object-cover" />
-          </div>
-          <div class="relative group overflow-hidden rounded-lg">
-            <a class="absolute inset-0 z-10" href="#">
-              <span class="sr-only">View</span>
-            </a>
-            <img src="/placeholder.svg" alt="Post 6" width="400" height="400" class="aspect-square object-cover" />
-          </div>
+          <% posts.forEach((post) =>{ %>
+
+            <div class="relative group overflow-hidden rounded-lg">
+              <a class="absolute inset-0" href="#">
+                <span class="sr-only">View</span>
+              </a>
+              <% if(post.mediaUrl.endsWith("mp4")){ %>
+                <video src="<%=post.mediaUrl%>"></video>
+              <% } else { %>
+                <img src="<%=post.mediaUrl%>" alt="Post 1" width="400" height="400" class="aspect-square object-cover" />
+              <% } %>
+            </div>
+          <% }) %>
         </div>
         <div
           data-state="inactive"

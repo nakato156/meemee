@@ -11,7 +11,15 @@ const PostSchema = new Schema({
         trim: true,
         required: true
     },
+    deleteHash: {
+        type: String,
+        required: true
+    },
     mediaUrl: {
+        type: String,
+        required: true
+    },
+    type:{
         type: String,
         required: true
     },

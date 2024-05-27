@@ -2,7 +2,7 @@ const Post = require("../models/posts")
 
 const postCtrl = {}
 
-async function getPosts(skip, limit) {
+async function getPosts(userId, skip, limit) {
     const topPosts = await Post.aggregate([
         {
             $lookup: {
@@ -15,6 +15,21 @@ async function getPosts(skip, limit) {
         {
             $unwind: "$author"
         },
+        // {
+        //     $lookup: {
+        //         from: "users",
+        //         localField: "likes",
+        //         foreignField: "_id",
+        //         as: "likedUsers"
+        //     }
+        // },
+        // {
+        //     $addFields: {
+        //         isLikedByCurrentUser: {
+        //             $in: [userId, "$likes"]
+        //         }
+        //     }
+        // },
         {
             $project: {
                 _id: 1,
@@ -43,7 +58,8 @@ async function getPosts(skip, limit) {
 
 
 postCtrl.indexPosts = async (req, res) => {
-    const posts = await getPosts(0, 3)
+    const userId = req.session.user._id
+    const posts = await getPosts(userId, 0, 3)
     res.render("dinamic/posts", { posts })
 }
 
@@ -53,11 +69,13 @@ postCtrl.reels = async (req, res) => {
 }
 
 postCtrl.suggestPost = async (req, res) => {
+    const userId = req.session.user._id
     try {
         const postPerPage = 3;
         const page = parseInt(req.query.page) || 1;
         const skip = (page - 1) * postPerPage;
-        const posts = await getPosts(skip, postPerPage)
+        const posts = await getPosts(userId, skip, postPerPage)
+        // console.log({posts})
         res.json(posts);
     } catch (err) {
         res.status(500).json({ error: 'Error fetching posts', details: err });

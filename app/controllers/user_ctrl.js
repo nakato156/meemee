@@ -21,6 +21,7 @@ userCtrl.home = (req, res) => {
 userCtrl.perfil = async (req, res) => {
     const user = req.session.user
     user.bio = user.bio || ''
+    user.profilePicture = user.profilePicture || ''
     
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 6;
@@ -80,7 +81,7 @@ userCtrl.editarPerfilForm = (req, res) => {
 userCtrl.publicarForm = (req, res) => {
     res.append("Cross-Origin-Opener-Policy", "same-origin");
     res.append("Cross-Origin-Embedder-Policy", "require-corp");
-    res.render("share/modalUpload")
+    res.render("components/modalUpload")
 }
 
 userCtrl.publicarPost = async (req, res) => {

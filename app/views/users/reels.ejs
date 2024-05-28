@@ -5,7 +5,7 @@
         <!-- <div class="w-full max-w-md"> -->
             <div id="reels" class="reel h-screen overflow-y-scroll snap-y snap-mandatory">
                 <!-- Reel Item -->
-                <div class="snap-start h-screen flex flex-col items-center justify-center bg-black relative">
+                <!-- <div class="snap-start h-screen flex flex-col items-center justify-center bg-black relative">
                     <video class="w-full h-full object-cover">
                         <source src="https://i.imgur.com/ZkxYAcs.mp4" type="video/mp4">
                         Your browser does not support the video tag.
@@ -25,10 +25,16 @@
                             </svg>                              
                         </button>
                     </div>
-                </div>
+                </div> -->
 
                 <% reels.forEach((reel, i) => {%>
                   <div class="snap-start h-screen flex flex-col items-center justify-center bg-black relative">
+                    <div class="md:hidden absolute pl-2 pt-2 top-0 left-0 flex text-white cursor-pointer" onclick="window.history.back()">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                        </svg>
+                        <p class="mx-2">Volver</p>                          
+                    </div>
                     <video class="w-full h-full object-cover aspect-[9/16]" loop>
                         <source src="<%=reel.mediaUrl%>" type="video/mp4">
                         Your browser does not support the video.

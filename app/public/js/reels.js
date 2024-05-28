@@ -17,10 +17,10 @@ let isLoading;
         });
         return activeReel;
     }
-    
+
     function updateActiveReel() {
         const activeReel = getActiveReel();
-        if(!prevReel) prevReel = activeReel
+        if (!prevReel) prevReel = activeReel
         if (prevReel != activeReel) {
             prevReel.querySelector('video').pause();
         }
@@ -31,10 +31,10 @@ let isLoading;
 
         }
     }
-    
-    divReels.addEventListener('scroll', (e)=>{
+
+    divReels.addEventListener('scroll', (e) => {
         if (divReels.scrollTop >= divReels.scrollHeight - (divReels.clientHeight * 1.8)) {
-            if(!isLoading) getReels(divReels);
+            if (!isLoading) getReels(divReels);
         }
         updateActiveReel();
     })
@@ -48,7 +48,7 @@ function getReels(divReels) {
         .then(response => response.json())
         .then(data => {
             isLoading = false;
-            if (data.status){
+            if (data.status) {
                 showReels(data, divReels)
             }
         })
@@ -56,8 +56,14 @@ function getReels(divReels) {
 
 function showReels(data, divReels) {
     let temp = '';
-    data.forEach(reel => {        
+    data.forEach(reel => {
         temp += `<div id="${reel._id}" class="snap-center h-screen flex flex-col items-center justify-center bg-black relative">
+            <div class="md:hidden absolute pl-2 pt-2 top-0 left-0 flex text-white cursor-pointer" onclick="window.history.back()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                </svg>
+                <p class="mx-2">Volver</p>                          
+            </div>    
             <video class="w-full h-full object-cover" id="${reel._id}" loop>
                 <source src="${reel.url}" type="video/mp4">
                 Your browser does not support the video tag.

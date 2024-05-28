@@ -1,5 +1,5 @@
 const User = require("../models/users")
-const jwt = require("jsonwebtoken")
+const { setCookie } = require("./cookie_ctrl")
 
 const authCtrl = {}
 
@@ -7,10 +7,11 @@ authCtrl.login = async (req, res) => {
     const {username, password, rememberMe} = req.body;
 
     const user = await User.findOne({username: username});
-    if(!user || user.password !== password){
+    const isMatchPass = await user.comparePassword(password);
+    if(!user || !isMatchPass){
         return res.json({msg: "Usuario o contraseña incorrecta ", field:"username"});
     }
-
+    
     const userForToken = {
         username: username,
         name: user.name,
@@ -21,19 +22,9 @@ authCtrl.login = async (req, res) => {
     }
 
     req.session.user = user;
+    req.session.rememberMe = rememberMe;
     
-    const JWT_EXPIRATION_LONG = process.env.JWT_EXPIRATION_LONG
-    const JWT_EXPIRATION_SHORT = process.env.JWT_EXPIRATION_SHORT
-
-    const timeExpiresIn = Number(rememberMe ? JWT_EXPIRATION_LONG : JWT_EXPIRATION_SHORT);
-    const expiresIn = rememberMe ? timeExpiresIn * 24 * 60 * 60 * 1000 : timeExpiresIn * 60 * 60 * 1000
-    const token = jwt.sign(userForToken, process.env.SECRET, {expiresIn: expiresIn});
-
-    res.cookie('token', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: expiresIn // 7 días o 1 hora
-    });
+    setCookie(res, userForToken, rememberMe)
     res.json({token})
 }
     
@@ -58,21 +49,9 @@ authCtrl.registro = async (req, res) => {
         id: new_user._id
     }
     try {
-
-        const JWT_EXPIRATION_LONG = process.env.JWT_EXPIRATION_LONG
-        const JWT_EXPIRATION_SHORT = process.env.JWT_EXPIRATION_SHORT
-
-        const timeExpiresIn = Number(rememberMe ? JWT_EXPIRATION_LONG : JWT_EXPIRATION_SHORT);
-        const expiresIn = rememberMe ? timeExpiresIn * 24 * 60 * 60 * 1000 : timeExpiresIn * 60 * 60 * 1000
-        const token = jwt.sign(userForToken, process.env.SECRET, {expiresIn: expiresIn});
-
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            maxAge: expiresIn // 7 días o 1 hora
-        });
-
+        setCookie(res, userForToken, rememberMe)
         req.session.user = new_user;
+        req.session.rememberMe = rememberMe;
 
         await new_user.save();
         res.json({token});

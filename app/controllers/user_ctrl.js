@@ -2,6 +2,7 @@ const Post = require("../models/posts")
 const User = require("../models/users")
 const axios = require('axios');
 const FormData = require('form-data');
+const { setCookie } = require('../controllers/cookie_ctrl')
 
 const userCtrl = {}
 
@@ -37,8 +38,11 @@ userCtrl.perfil = async (req, res) => {
 userCtrl.editarPerfil = async (req, res) => {
     const {username, email, bio} = req.body
     
+    const oldUsername = req.session.user.username
+
     let profilePicture = req.session.user.profilePicture;
     let deletehash = req.session.user.deletehash;
+    
     if(req.file){
         const image = req.file.buffer
         const formData = new FormData();
@@ -67,7 +71,19 @@ userCtrl.editarPerfil = async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate({_id: req.session.user._id}, {username, email, bio, profilePicture, deletehash}, { new: true })
         req.session.user = user
-        console.log({user: req.session.user})
+
+        if(oldUsername !== user.username) {
+            const userForToken = {
+                username: user.username,
+                name: user.name,
+                email: user.email,
+                genero: user.genero,
+                bio: user.bio,
+                id: user._id
+            }
+            setCookie(res, userForToken, req.session.rememberMe)
+        }
+
         res.json({status: true, link: profilePicture})
     } catch (error) {
         res.json({status: false})

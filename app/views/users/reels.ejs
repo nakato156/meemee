@@ -29,7 +29,7 @@
 
                 <% reels.forEach((reel, i) => {%>
                   <div class="snap-start h-screen flex flex-col items-center justify-center bg-black relative">
-                    <video class="w-full h-full object-cover" loop>
+                    <video class="w-full h-full object-cover aspect-[9/16]" loop>
                         <source src="<%=reel.mediaUrl%>" type="video/mp4">
                         Your browser does not support the video.
                     </video>

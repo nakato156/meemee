@@ -30,6 +30,7 @@
     btnSend.addEventListener('click', (e) => {
         e.preventDefault();
         uploadPost(files[0]);
+        input.value = '';
     })
 })()
 
@@ -120,12 +121,14 @@ function uploadPost(file){
     })
     .then(response => response.json())
     .then(data => {
-        alert("No se si se subio pero...", {data})
         if(data.status){
             const contador = document.getElementById("countPub")
             contador.innerText = parseInt(contador.innerText) + 1
             showNewPost(file)
+            document.getElementById('modalUpload').parentElement.classList.add("hidden")
         }
+        console.log({data})
+        Swal.fire({icon: data.status ? 'success' : 'error', text: data.message})
     })
 }
 

@@ -22,6 +22,8 @@ userCtrl.perfil = async (req, res) => {
     const user = req.session.user
     user.bio = user.bio || ''
     user.profilePicture = user.profilePicture || ''
+
+    console.log({perfil: user})
     
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 6;
@@ -63,8 +65,9 @@ userCtrl.editarPerfil = async (req, res) => {
     }
 
     try {
-        const user = await User.updateOne({_id: req.session.user._id}, {username, email, bio, profilePicture, deletehash})
+        const user = await User.findByIdAndUpdate({_id: req.session.user._id}, {username, email, bio, profilePicture, deletehash}, { new: true })
         req.session.user = user
+        console.log({user: req.session.user})
         res.json({status: true, link: profilePicture})
     } catch (error) {
         res.json({status: false})
@@ -86,15 +89,26 @@ userCtrl.publicarForm = (req, res) => {
 
 userCtrl.publicarPost = async (req, res) => {
     const { descripcion } = req.body
-    
     const file = req.file
+    
+    const MAX_SIZE = 20 * 1024 * 1024;
+    
+    if(!descripcion) return res.json({status: false, message:"Debe ingresar una descripcion "})
+    if(!file) return res.json({status: false, message:"Debe subir un archivo "})
+    if(file.size > MAX_SIZE) return res.json({status: false, message:"El archivo no puede superar los 20MB "})
+
     const formData = new FormData();
 
     const type = file.mimetype.split('/')[0]
     formData.append(type, file.buffer)
 
-    const response = await uploadFile(formData)
-    if(response.status !== 200) return res.json({status: false})
+    try {
+        const response = await uploadFile(formData)
+        if(response.status !== 200) return res.json({status: false, message:"No se pudo subir el archivo"})
+    }
+    catch (err) {
+        return res.json({status: false, message:"Error al subir el archivo"})
+    }
     
     // const session = await mongoose.startSession();
     let flag = true;
@@ -114,14 +128,14 @@ userCtrl.publicarPost = async (req, res) => {
         }
         await post.save()
     } catch (error) {
-        console.error(error)
+        // console.error(error)
         flag = false;
     }
-    console.log("terminado", response.data.data.link)
+
     req.session.user.postCount += 1
 
     if(flag) res.json({status: true, link: response.data.data.link})
-    else res.json({status: false})
+    else res.json({status: false, message:"Error al subir el Post"})
 }
 
 userCtrl.publicarReel = (req, res) => {

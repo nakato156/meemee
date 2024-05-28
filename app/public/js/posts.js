@@ -64,7 +64,7 @@ function showPosts(posts, mainPosts){
                             class="like inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="w-6 h-6">
+                                stroke-linejoin="round" class="w-6 h-6 ${post.isLikedByUser ? 'fill-rose-400' : 'fill-none'}">
                                 <path
                                     d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z">
                                 </path>
@@ -98,7 +98,13 @@ function showPosts(posts, mainPosts){
 }
 
 function toggleLike(postId, btn){
-    btn.children[0].classList.add("fill-rose-400")
+    btn = btn.children[0]
+    
+    if(btn.classList.contains('fill-rose-400'))
+        btn.classList.remove("fill-rose-400")
+    else 
+        btn.classList.add("fill-rose-400")
+
     fetch(`/like/${postId}`, {
         method: 'POST',
         headers: {
@@ -108,7 +114,7 @@ function toggleLike(postId, btn){
     .then(response => response.json())
     .then(data => {
         if(data.error){
-            btn.children[0].classList.remove("fill-rose-400")
+            btn.classList.toggle("fill-rose-400")
             return
         }
         

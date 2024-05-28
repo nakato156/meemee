@@ -7,7 +7,8 @@ window.addEventListener("DOMContentLoaded", (e)=>{
     const modals = document.querySelectorAll(".modal");
     modals.forEach((modal)=>{
         modal.addEventListener("click", (e)=>{
-            const url = e.target.getAttribute("url")
+            const element = e.target.closest("[url]")
+            const url = element.getAttribute("url")
             getModal(url)
         })
     })

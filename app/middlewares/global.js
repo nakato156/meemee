@@ -4,7 +4,6 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 const conditionalMiddleware = (req, res, next) => {
     const contentType = req.headers['content-type'] || '';
-    
     if (contentType.startsWith('multipart/form-data')) {
       upload.single('image')(req, res, (err) => {
         if (err) {

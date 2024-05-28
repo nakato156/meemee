@@ -34,7 +34,6 @@ authCtrl.login = async (req, res) => {
         secure: process.env.NODE_ENV === 'production',
         maxAge: expiresIn // 7 días o 1 hora
     });
-
     res.json({token})
 }
     
@@ -49,7 +48,6 @@ authCtrl.registro = async (req, res) => {
     }
 
     new_user = new User({username: username, name:name, email:email, password:password,  birdthday:birdthday, genero:genero});
-    console.log(new_user);
 
     const userForToken = {
         username: username,

@@ -24,7 +24,7 @@ authCtrl.login = async (req, res) => {
     req.session.user = user;
     req.session.rememberMe = rememberMe;
     
-    setCookie(res, userForToken, rememberMe)
+    const token = setCookie(res, rememberMe, userForToken)
     res.json({token})
 }
     
@@ -49,7 +49,7 @@ authCtrl.registro = async (req, res) => {
         id: new_user._id
     }
     try {
-        setCookie(res, userForToken, rememberMe)
+        const token = setCookie(res, rememberMe, userForToken)
         req.session.user = new_user;
         req.session.rememberMe = rememberMe;
 

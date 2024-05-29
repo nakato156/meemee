@@ -15,6 +15,7 @@ cookieCtrl.setCookie = (res, rememberMe, userForToken) => {
         secure: process.env.NODE_ENV === 'production',
         maxAge: expiresIn // 7 días o 1 hora
     });
+    return token;
 }
 
 module.exports = cookieCtrl;
